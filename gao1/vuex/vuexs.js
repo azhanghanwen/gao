@@ -48,7 +48,7 @@ var store = new Vuex.Store({
             }
             state.school_college_obj.map((value, index)=>{
                 if(index == item.index){
-                    value.selected = item.selected
+                    value.selected = item.selected;
                 }
                 return value;
             })

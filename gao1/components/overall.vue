@@ -13,7 +13,6 @@
 				<p>专业层次：</p>
 				<professional-levels :pathname="'major_range'"></professional-levels>
 			</div>
-
 			<div class="university-levels">
 				<p>高校层次：</p>
 				<university-levels :pathname="'school_range'"></university-levels>
@@ -27,7 +26,7 @@
 		<div class="info">
 			<h1>选考科目分析</h1>
 			<h2>科目比例：要求所选选考科目的专业总数/条件范围内专业总数。以专业为例：经济统计学专业历史所占比例为66.7%，意为选考历史，66.7%的经济统计学专业均可报考</h2>
-			<div class="con">
+			<div class="cons">
 				<div>
 					<p>高考科目</p>
 					<p>高校数</p>
@@ -41,6 +40,9 @@
 				<div is = "subjects" :pathname="'analysisData'"></div>
 			</div>
 		</div>
+		<collegial-school :title="collegialData" :contentInfo="collegeContentData">
+			<tab-row v-for="i in collegeContentData" :row="i"></tab-row>
+		</collegial-school>
 	</div>
 </template>
 <script>
@@ -48,16 +50,30 @@
 	import pro from './professional.js';
 	import uni from './university.js';
 	import dis from './district.js';
-	import tabStart from './proSubject.js'
+	import tabStart from './proSubject.js';
+	import collegial from './collegial.vue';
+	import tabr from './tabr.vue';
 	export default {
 		data(){
-			return {}
+			return {
+				collegialData:[],
+				collegeContentData:[]
+			}
 		},
 		components: {
 			"professional-levels":pro,
 			"university-levels":uni,
 			"district-college":dis,
-			"subjects":tabStart
+			"subjects":tabStart,
+			"collegial-school":collegial,
+			"tab-row":tabr
+		},
+		created:function(){
+			var vm = this;
+			this.$http.get('../data/school_range.json').then(function(res){
+				vm.collegialData = res.data.result.title;
+				vm.collegeContentData = res.data.result.rows;
+			})
 		},
 		methods:{
 			clearRange:function () {
@@ -140,6 +156,7 @@
 	.info{
 		width: 1000px;
 		height: auto;
+		overflow: hidden;
 	}
 	.info h1{
 		height: 50px;
@@ -153,7 +170,7 @@
 		padding:10px 0;
 	}
 	.info .tab1{
-		width: 490px;
+		width: 480px;
 		height: auto;
 		float: left;
 	}
@@ -162,19 +179,24 @@
 		height: 50px;
 	}
 	.con div{
-		width: 1000px;
+		width: 1125px;
 		height: 50px;
 	}
-	.tab1{
-		width: 500px;
+	.con div p{
+		width: 125px;
+		height: 50px;
+		line-height: 50px;
+		color: #fff;
+		background: green;
+		float: left;
+		text-align: center;
 	}
-	.con p{
+	.cons div p{
 		width: 120px;
 		height: 50px;
 		line-height: 50px;
 		color: #fff;
 		background: green;
-		border:1px solid #ccc;
 		float: left;
 		text-align: center;
 	}
@@ -194,4 +216,22 @@
 		width: 1000px;
 		height: auto;
 	}
+	.collegial{
+		width: 1125px;
+		height: auto;
+		margin-top: 20px;
+	}
+	.school_collegial{
+		width:964px;
+		height: 50px;
+	}
+	.school_collegial p{
+		float: left;
+		width: 120px;
+		text-align: center;
+		line-height: 50px;
+		background: green;
+		color: #fff;
+	}
+
 </style>

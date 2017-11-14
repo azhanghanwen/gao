@@ -1,5 +1,10 @@
 import overall from '../components/overall.vue';
+import collegesRet from '../components/collegesRet.vue';
 let routes = [
+	{
+		path:'/',
+		redirect:'/overall'
+	},
 	{
 		path: '/overall',
 		name: 'overall',
@@ -8,11 +13,7 @@ let routes = [
 	{
 		path: '/college',
 		name: 'college',
-		component: {
-			template: `
-				<h1>college</h1>
-			`
-		}
+		component: collegesRet
 	},
 	{
 		path: '/major',
